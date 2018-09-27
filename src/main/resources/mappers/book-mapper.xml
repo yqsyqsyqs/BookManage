@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.bookmanage.mappers.BookMapper">
+
+	<resultMap type="Book" id="book">
+		<!-- col是数据库里面的 属性是实体类里面的 -->
+		<result column="book_id" property="bookId" />
+		<result column="book_name" property="bookName" />
+		<result column="rebulisher" property="rebulisher" />
+		<result column="author" property="author" />
+		<result column="BOOK_IMGID" property="bookImgid" />
+		<result column="PRICE" property="price" />
+		<result column="PUT_DATE" property="putDate" />
+		<result column="STORENUMBER" property="storenumber"/>
+		<result column="ISUSE" property="isuse" />
+		<result column="PINYIN" property="pinyin" />
+		<result column="TYPE_ID" property="typeId" />
+	</resultMap>
+
+	<select id="findallbook" resultMap="book">
+		select * from b_book
+	</select>
+	<select id="mohufind" resultMap="book">
+		select * from b_book b
+		    <if test="bookName !=null">
+				<where>
+					b.BOOK_NAME like '%${bookName}%' or
+					b.rebulisher like '%${bookName}%' or
+					b.author like '%${bookName}%'
+				</where>
+			</if>
+		
+	</select>
+	
+	<select id="mohufind2"  resultMap="book">
+		select * from b_book b
+		    <if test="bookName !=null">
+				<where>
+ 			  <!-- 第一种方法字符里面直接拼接'%%' -->
+              <!--  b.BOOK_NAME like #{bookName} or b.rebulisher like #{bookName} or b.author like #{bookName}   -->
+			  <!-- 第二种方法利用bind-->
+			  <!-- <bind name="pattern" value="'%'+bookName+'%'"/>
+              b.BOOK_NAME like #{pattern} or b.rebulisher like #{pattern} or b.author like #{pattern} --> 
+              
+				</where>
+			</if>
+		
+	</select>
+	
+	<select id="mohufind3"  parameterType="cn.gson.bookmanage.model.entity.Book" resultMap="book">
+		select * from b_book b
+		    
+				<where>
+			<choose>
+			  <when test="bookName !=null and bookName!='%%'">
+			  	 b.BOOK_NAME like #{bookName} 
+                <if test="rebulisher !=null and rebulisher!='%%'">
+                 or b.rebulisher like #{rebulisher}
+                  <if test="author !=null and author!='%%'">
+                 	or b.author like #{author}
+                  </if>
+                </if>
+			  </when>
+			  <when test="bookName ==null or bookName=='%%'">
+			     <if test="rebulisher !=null and rebulisher!='%%'">
+                  b.rebulisher like #{rebulisher}
+                  <if test="author !=null and author!='%%'">
+                 	or b.author like #{author}
+                  </if>
+                </if>
+			  </when>
+			  <when test="rebulisher ==null and rebulisher=='%%'">
+			  	  <if test="author !=null and author!='%%'">
+                 	b.author like #{author}
+                  </if>
+              </when>
+			</choose>
+        		</where>
+			
+		
+	</select>
+	
+</mapper>

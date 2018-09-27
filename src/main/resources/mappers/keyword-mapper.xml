@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.bookmanage.mappers.KeywordMapper">
+<resultMap type="Keyword" id="keyword">
+ <result column="KEYWORD_ID" property="keywordId"/>
+ <result column="CREATE_TIME" property="createTime"/>
+ <result column="KEYWORD" property="keyword"/>
+ <result column="KEY_WORD_NUMBER" property="keyWordNumber"/>
+</resultMap>
+<select id="findhotthree" resultMap="keyword">
+<![CDATA[
+select * from b_keyword key where rownum < 3 order by key.KEY_WORD_NUMBER 
+]]>
+</select>
+<select id="findKeywordByRkeyword" resultMap="keyword">
+select * from b_keyword key where key.rkeyword=#{keyword}
+</select>
+</mapper>
