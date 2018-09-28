@@ -24,6 +24,7 @@ public class BookmanageApplication {
 	
 
 	public static void main(String[] args) {
+		//??test
 		SpringApplication.run(BookmanageApplication.class, args);
 	}
 }
