@@ -87,7 +87,7 @@ public class LoginController {
 	public String dfssdf(Model model, @RequestParam(value = "file", required = false) MultipartFile file,
 			@Valid User user, BindingResult br) throws IllegalStateException, IOException {
 		// 先save这个用户得到userid 再给att去插入一条记录
-		user.setMoney(100.0);
+		user.setMoney(100.00);
 		userDao.save(user);
 		if (!file.isEmpty()) {
 			Attachment attachment = attachService.saveAttachment(file, user);
